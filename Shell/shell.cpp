@@ -11,40 +11,6 @@
 #include "shell.h"
 #include <vector>
 using namespace std;
-/*
-!!!!!!!! POINTS I CLAIM !!!!!!!!!
-    3 You search the path for the executable
-        ls
-    2 Can run commands in the background.
-        processImage &
-    2 Concatenate commands with &&.  Only runs next command if the previous command returned success.
-        cd /home/rappleto && rm fred.txt
-    3 Does filename expansion "glob"
-        (Hint:  Use the built in glob, or really use wordexp.)
-        http://www.gnu.org/software/libc/manual/html_node/Wordexp-Example.html
-        http://euclid.nmu.edu/~rappleto/Classes/CS426/Assignments/TheBigAssignment/wordexp-example.cc
-        ls a*b
-    1 Replace "~" with the home directory
-        (wordexp can do this too)
-        rm ~/junkfile
-    1 Control-L clears the screen
-    1 Tab Completion
-    1 Arrow History
-    1 Saves and reloads history to a file
-    1 Knows how to change directory
-        (See chdir)
-        cd /fred
-    2 Can run commands from a file
-        . scriptFile.txt
-    2 Automatically runs a file called .myshell when it starts
-    1 Bang last command that starts with some letter.
-        Assuming in the past you ran 'rm'.
-            !r runs rm
-    1 Bang # command
-            !4 runs 4th command from history
-    +2 Turned in 4 days early (Monday)
-    24 points
-*/
 
 int historyCount = 0;
 int backgroundProcessFlag = false;
@@ -72,15 +38,12 @@ int Exec(int aPID, char **args)
 
     if (aPID == 0)
     {
-        // for (int i = 0; args[i] != nullptr; i++)
-        ///{
 
         if (-1 == execvp(args[0], args))
         {
             perror("execvp: ");
             exit(1);
         }
-        // }
     }
     else if (!backgroundProcessFlag)
     {
@@ -398,8 +361,8 @@ int main()
     {
         backgroundProcessFlag = false;
         getWorkingDirSetToPS1();
-        char **args = readLineAndAddHistory(); // as of 11/1, args is correctly an array of char*
-        fflush(stdout);                        // added an fflush to here and to readLineAndAddHistory() b/c I was getting some weird printing going on and google said this could help
+        char **args = readLineAndAddHistory();
+        fflush(stdout);
         if (args == nullptr)
         {
             continue;
